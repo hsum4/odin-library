@@ -1,10 +1,13 @@
 const myLibrary = [];
 const libraryTable = document.getElementById("library-table");
-
+const addBtn = document.getElementById("add");
+const bookForm = document.getElementById("book-form");
+const bookDialog = document.getElementById("book-dialog");
+const closeDialogBtn = document.getElementById("close-dialog");
 
 function Book(title, author, pages, read) {
 this.title = title;
-this. author = author;
+this.author = author;
 this.pages = pages
 this.read = read;
 }
@@ -29,7 +32,25 @@ function addLibraryToTable(myLibrary) {
     });
 }
 
-addBookToLibrary("hobbt", "jjtolkin", 203, "no");
-addBookToLibrary("harry poter", "idunno", 233, "yea");
+addBtn.addEventListener("click", () => {
+    bookDialog.showModal();
+});
 
-addLibraryToTable(myLibrary);
+closeDialogBtn.addEventListener("click", () => {
+    bookDialog.close();
+});
+
+bookForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const title = document.getElementById("title").value;
+    const author = document.getElementById("author").value;
+    const pages = document.getElementById("pages").value;
+    const read = document.getElementById("read").checked ? "yes" : "no";
+
+    addBookToLibrary(title, author, pages, read);
+    addLibraryToTable(myLibrary);
+
+    bookForm.reset();
+    bookDialog.close();
+});

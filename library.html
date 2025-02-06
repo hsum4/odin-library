@@ -9,7 +9,22 @@
 </head>
 <body>
     <h1>The Library</h1>
-    <button>Add</button>
+    <button onclick="addBook()" id="add">Add</button>
+
+    <dialog id="book-dialog">
+        <form id="book-form">
+            <input type="text" id="title" placeholder="Title" required>
+            <input type="text" id="author" placeholder="Author" required>
+            <input type="number" id="pages" placeholder="Pages" required>
+            <label>
+                <input type="checkbox" id="read"> Read
+            </label>
+            <button type="submit">Add Book</button>
+            <button type="button" id="close-dialog">Cancel</button>
+        </form>
+    </dialog>
+    
+
     <table>
         <thead>
             <tr>
@@ -22,5 +37,7 @@
         <tbody id="library-table">
         </tbody>
     </table>
+
+    
 </body>
 </html>
