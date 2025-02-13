@@ -6,10 +6,10 @@ const bookDialog = document.getElementById("book-dialog");
 const closeDialogBtn = document.getElementById("close-dialog");
 
 function Book(title, author, pages, read) {
-this.title = title;
-this.author = author;
-this.pages = pages
-this.read = read;
+    this.title = title;
+    this.author = author;
+    this.pages = pages
+    this.read = read;
 }
 
 function addBookToLibrary(title, author, pages, read) {
@@ -19,7 +19,8 @@ function addBookToLibrary(title, author, pages, read) {
 
 function addLibraryToTable(myLibrary) {
     libraryTable.innerHTML = "";
-    myLibrary.forEach(element => {
+
+    myLibrary.forEach((element, index) => {
         const tr = document.createElement("tr");
         for (const data in element) {
             if (element.hasOwnProperty(data)) {
@@ -28,6 +29,15 @@ function addLibraryToTable(myLibrary) {
                 tr.appendChild(td);
             }
         }
+
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "X";
+        removeBtn.addEventListener("click", () => removeBook(index));
+
+        const td = document.createElement("td");
+        td.appendChild(removeBtn);
+        tr.appendChild(td);
+
         libraryTable.appendChild(tr);
     });
 }
@@ -54,3 +64,8 @@ bookForm.addEventListener("submit", function (event) {
     bookForm.reset();
     bookDialog.close();
 });
+
+function removeBook(index) {
+    myLibrary.splice(index, 1);
+    addLibraryToTable(myLibrary);
+}
