@@ -6,10 +6,11 @@ const bookDialog = document.getElementById("book-dialog");
 const closeDialogBtn = document.getElementById("close-dialog");
 
 function Book(title, author, pages, read) {
+    this.id = crypto.randomUUID();
     this.title = title;
     this.author = author;
     this.pages = pages
-    this.read = read;
+    this.read = read;   
 }
 
 Book.prototype.toggleRead = function () {
@@ -21,10 +22,10 @@ function addBookToLibrary(title, author, pages, read) {
     myLibrary.push(newBook);
 }
 
-function addLibraryToTable(myLibrary) {
+function addLibraryToTable() {
     libraryTable.innerHTML = "";
 
-    myLibrary.forEach((element, index) => {
+    myLibrary.forEach((element) => {
         const tr = document.createElement("tr");
         for (const data of ["title", "author", "pages"]) {
             const td = document.createElement('td');
@@ -45,7 +46,7 @@ function addLibraryToTable(myLibrary) {
         const removeTd = document.createElement("td");
         const removeBtn = document.createElement("button");
         removeBtn.textContent = "X";
-        removeBtn.addEventListener("click", () => removeBook(index));
+        removeBtn.addEventListener("click", () => removeBook(element.id));
         removeTd.appendChild(removeBtn);
         tr.appendChild(removeTd);
 
@@ -76,7 +77,10 @@ bookForm.addEventListener("submit", function (event) {
     bookDialog.close();
 });
 
-function removeBook(index) {
-    myLibrary.splice(index, 1);
-    addLibraryToTable(myLibrary);
+function removeBook(id) {
+    const index = myLibrary.findIndex(book => book.id === id);
+    if (index !== -1) {
+        myLibrary.splice(index, 1);
+    }
+    addLibraryToTable();
 }
