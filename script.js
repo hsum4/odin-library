@@ -72,6 +72,7 @@ bookForm.addEventListener("submit", function (event) {
 
     addBookToLibrary(title, author, pages, read);
     addLibraryToTable(myLibrary);
+    saveLibrary();
 
     bookForm.reset();
     bookDialog.close();
@@ -83,4 +84,25 @@ function removeBook(id) {
         myLibrary.splice(index, 1);
     }
     addLibraryToTable();
+    saveLibrary();
 }
+
+function saveLibrary() {
+    localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+}
+
+function loadLibrary() {
+    const data = localStorage.getItem("myLibrary");
+    console.log(data);
+    if (data) {
+        const books = JSON.parse(data);
+        books.forEach(book => {
+            const newBook = new Book(book.title, book.author, book.pages, book.read);
+            newBook.id = book.id;
+            myLibrary.push(newBook);
+        });
+    }
+    addLibraryToTable();
+}
+
+loadLibrary();
