@@ -21,11 +21,13 @@ class Book{
 class Library {
     constructor(){
         this.bookList = [];
+        this.loadLibrary();
     }
 
     addBookToLibrary(title, author, pages, read) {
         const newBook = new Book(title, author, pages, read);
         this.bookList.push(newBook);
+        this.saveLibrary();
     }
 
     removeBook(id) {
@@ -34,6 +36,7 @@ class Library {
             this.bookList.splice(index, 1);
         }
         this.addLibraryToTable();
+        this.saveLibrary();
     }
 
     addLibraryToTable() {
@@ -66,6 +69,25 @@ class Library {
             libraryTable.appendChild(tr);
         });
     }
+
+    saveLibrary() {
+        localStorage.setItem("The Library!", JSON.stringify(this.bookList))
+    }
+
+    loadLibrary() {
+        const data = localStorage.getItem("The Library!");
+        console.log(data);
+        if (data) {
+            const books = JSON.parse(data);
+            books.forEach(book => {
+                const newBook = new Book(book.title, book.author, book.pages, book.read);
+                newBook.id = book.id;
+                this.bookList.push(newBook);
+            });
+        }
+        this.addLibraryToTable();
+    }
+
 }
 
 function setupLibraryEventListeners(libraryInstance) {
