@@ -6,6 +6,7 @@ const closeDialogBtn = document.getElementById("close-dialog");
 
 class Book{
     constructor(title, author, pages, read){
+        this.id = crypto.randomUUID();
         this.title = title;
         this.author = author;
         this.pages = pages
@@ -27,14 +28,17 @@ class Library {
         this.bookList.push(newBook);
     }
 
-    removeBook(index) {
-        this.bookList.splice(index, 1);
-        this.addLibraryToTable(this.bookList);
+    removeBook(id) {
+        const index = this.bookList.findIndex(book => book.id === id)
+        if (index !== -1) {
+            this.bookList.splice(index, 1);
+        }
+        this.addLibraryToTable();
     }
 
     addLibraryToTable() {
         libraryTable.innerHTML = "";
-        this.bookList.forEach((element, index) => {
+        this.bookList.forEach((element) => {
             const tr = document.createElement("tr");
             for (const data of ["title", "author", "pages"]) {
                 const td = document.createElement('td');
@@ -55,15 +59,13 @@ class Library {
             const removeTd = document.createElement("td");
             const removeBtn = document.createElement("button");
             removeBtn.textContent = "X";
-            removeBtn.addEventListener("click", () => this.removeBook(index));
+            removeBtn.addEventListener("click", () => this.removeBook(element.id));
             removeTd.appendChild(removeBtn);
             tr.appendChild(removeTd);
     
             libraryTable.appendChild(tr);
         });
     }
-
-    
 }
 
 function setupLibraryEventListeners(libraryInstance) {
